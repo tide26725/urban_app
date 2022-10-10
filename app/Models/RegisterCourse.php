@@ -29,4 +29,6 @@ class RegisterCourse extends Model
         'deleted_by',
         'deleted_datetime',
     ];
+
+
 }

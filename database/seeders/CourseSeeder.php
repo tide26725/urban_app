@@ -24,7 +24,7 @@ class CourseSeeder extends Seeder
                 'course_name' => 'การปลูกผักคนเมือง',
                 'quota' => 55,
                 'quota_max' => 65,
-                'start_time' => '09:00:00',
+                'start_time' => '09:30:00',
                 'end_time' => '12:00:00',
                 'course_group' => 1,
                 'created_at' => Carbon::now(),

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\Register;
 use App\Models\RegisterCourse;
+use Illuminate\Support\Facades\DB;
+use App\Models\Amphure;
+use App\Models\District;
 
 class RegisterController extends Controller
 {
@@ -14,9 +18,25 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if (!$request->tel_no) {
+
+            return view('index');
+        }
+
+        $register = Register::where('tel_no', $request->tel_no)->first();
+
+        if($register){
+            return redirect()->route('register.show', $register->register_id);
+        } else {
+
+            $dropdown = new DropdownController;
+            $provinces = $dropdown->index();
+
+            return view('register_form', compact('register','provinces'));
+        }
+        
     }
 
     /**
@@ -48,141 +68,12 @@ class RegisterController extends Controller
             'province_id' => 'required',
             'post_code' => 'required',
             'tel_no' => 'required|unique:registers',
-            'email' => 'required',
+            'tel_no_confirm' => 'required|same:tel_no',
+            // 'email' => 'required',
             'age' => 'required',
-            'residence_mst_id' => 'required',
-            'farmland_mst_id' => 'required',
-            'education_lv_mst_id' => 'required',
-            'career_mst_id' => 'required',
-            'income_mst_id' => 'required',
-            'reason_mst_id' => 'required',
         ]);
 
-        
-        $data = [
-                'prefix' => $request->prefix,
-                'firstname' => $request->firstname,
-                'lastname' => $request->lastname,
-                'address' => $request->address,
-                'district_id' => $request->district_id,
-                'amphure_id' => $request->amphure_id,
-                'province_id' => $request->province_id,
-                'post_code' => $request->post_code,
-                'tel_no' => $request->tel_no,
-                'email' => $request->email,
-                'age' => $request->age,
-                'residence_mst_id' => $request->residence_mst_id,
-                'farmland_mst_id' => $request->farmland_mst_id,
-                'education_lv_mst_id' => $request->education_lv_mst_id,
-                'career_mst_id' => $request->career_mst_id,
-                'income_mst_id' => $request->income_mst_id,
-                'reason_mst_id' => $request->reason_mst_id,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-        ];
 
-
-        $register = Register::create($data);
-
-        $response = [
-            "status" => "201",
-            "message" => "บันทึกข้อมูลสำเร็จ",
-            'register_id' => $register->register_id
-        ];
-
-        return response()->json($response, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  @param  int  $tel_no
-     * @return \Illuminate\Http\Response
-     */
-    public function show($tel_no)
-    {
-        if(!$tel_no){
-            $response = [
-                'status' => 404,
-                'message' => 'ไม่พบข้อมูล'
-            ];
-            return response()->json($response);
-        }
-
-        $register = Register::where('tel_no' , $tel_no)->first();
-
-        if(!$register){
-            $response = [
-                'status' => 404,
-                'message' => 'ไม่พบข้อมูล'
-            ];
-            return response()->json($response);
-        }
-
-        $register_course = RegisterCourse::where('register_id' , $register->register_id)
-                                        ->where('is_delete', 0)
-                                        ->get();
-
-        if($register){
-
-            $response = [                
-                'status' => 200,
-                'message' => "ค้นหาข้อมูลสำเร็จ",
-                'register' => $register,
-                'register_course' => $register_course,
-            ];
-
-            return response()->json($response);
-            
-        } else {
-            $response = [
-                'status' => 404,
-                'message' => 'ไม่พบข้อมูล'
-            ];
-            return response()->json($response);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-    * @param  int  $register_id
-     * @return \Illuminate\Http\Response
-     * 
-     */
-    public function edit($register_id)
-    {
-        $register = Register::where('register_id', $register_id)->first();
-        
-        if($register) {
-            $response = [
-                'status' => 200,
-                'message' => "ค้นหาข้อมูลสำเร็จ",
-                'register' => $register
-            ];
-    
-            return response()->json($response);
-        } else {
-            $response = [
-                'status' => 404,
-                'message' => "ไม่พบข้อมูล"
-            ];
-    
-            return response()->json($response);
-        }
-
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $register_id
-     * @return \Illuminate\Http\Response
-     */
-    public function update($register_id, Request $request)
-    {
         $data = [
             'prefix' => $request->prefix,
             'firstname' => $request->firstname,
@@ -195,30 +86,144 @@ class RegisterController extends Controller
             'tel_no' => $request->tel_no,
             'email' => $request->email,
             'age' => $request->age,
-            'residence_mst_id' => $request->residence_mst_id,
-            'farmland_mst_id' => $request->farmland_mst_id,
-            'education_lv_mst_id' => $request->education_lv_mst_id,
-            'career_mst_id' => $request->career_mst_id,
-            'income_mst_id' => $request->income_mst_id,
-            'reason_mst_id' => $request->reason_mst_id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ];
+
+
+        $register = Register::create($data);
+        
+        //return view('questionnaire', compact('register'));
+        return redirect()->route('questionnaire.show', $register->register_id);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  @param  int  $tel_no
+     * @return \Illuminate\Http\Response
+     */
+    public function show($register_id)
+    {
+        // if (!$request->tel_no) {
+
+        //     return view('index');
+        // }
+        
+        $register = DB::table('registers')
+            ->where('register_id', $register_id)
+            ->leftjoin('provinces', 'registers.province_id', 'provinces.id')
+            ->leftjoin('amphures', 'registers.amphure_id', 'amphures.id')
+            ->leftjoin('districts', 'registers.district_id', 'districts.id')
+            ->select('registers.*','provinces.name_th as province_name','amphures.name_th as amphure_name','districts.name_th as district_name','districts.zip_code')
+            ->first();
+
+        if (!$register) {
+            //dd($request->tel_no);
+            return view('index');
+        }
+
+        $register_course = RegisterCourse::where('register_id', $register->register_id)
+            ->where('is_delete', 0)
+            ->get();
+
+
+        $count = $register_course->count();
+        if ($register) {
+
+            if($register->residence_mst_id == null){
+                
+                return view('questionnaire', compact('register'));
+            }
+
+            return view('register_show', compact('register', 'register_course', 'count'));
+        } else {
+            return view('index');
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $register_id
+     * @return \Illuminate\Http\Response
+     * 
+     */
+    public function edit($register_id)
+    {
+        $register = Register::where('register_id', $register_id)->first();
+
+        if ($register) {
+
+            $provinces = Province::all();
+            $amphures = Amphure::where('province_id', $register->province_id)->get();
+            $districts = District::where('amphure_id', $register->amphure_id)->get();
+
+            return view('register_edit', compact('register','provinces','amphures','districts'));
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => "ไม่พบข้อมูล"
+            ];
+
+            return view('index');
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $register_id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($register_id, Request $request)
+    {
+        if(!$register_id){
+            return view('index');
+        }
+
+        $request->validate([
+            'prefix' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'address' => 'required',
+            'district_id' => 'required',
+            'amphure_id' => 'required',
+            'province_id' => 'required',
+            'post_code' => 'required',
+            'age' => 'required',
+        ]);
+
+        $data = [
+            'prefix' => $request->prefix,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'address' => $request->address,
+            'district_id' => $request->district_id,
+            'amphure_id' => $request->amphure_id,
+            'province_id' => $request->province_id,
+            'post_code' => $request->post_code,
+            'email' => $request->email,
+            'age' => $request->age,
             'updated_at' => Carbon::now()
         ];
 
         $register = Register::where('register_id', $register_id)->update($data);
 
-        if($register) {
+        if ($register) {
             $response = [
                 'status' => 200,
                 'message' => "ปรับปรุงข้อมูลสำเร็จ"
             ];
-            return response()->json($response);
+            return redirect()->route('register.edit', $register_id)->with('success','ปรับปรุงข้อมูสำเร็จ');
         }
 
         $response = [
             'status' => 404,
             'message' => "ไม่พบข้อมูล"
         ];
-        return response()->json($response);
+        return redirect()->route('register.show', $register_id)->with('error','เกิดข้อผิดพลาดในการปรับปรุงข้อมูลส่วนตัว กรุณาลองใหม่');
     }
 
     /**

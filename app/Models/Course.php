@@ -20,4 +20,7 @@ class Course extends Model
         'end_time',
         'course_group',
     ];
+
+
+    
 }

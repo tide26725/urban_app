@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Register;
 use App\Models\Course;
 use App\Models\RegisterCourse;
+use Illuminate\Support\Facades\DB;
 
 class RegisterCourseController extends Controller
 {
@@ -44,6 +45,12 @@ class RegisterCourseController extends Controller
             'register_id' => 'required',
         ]);
 
+        //ตรวจสอบข้อมูลผู้ลงทะเบียน
+        $register_data = Register::where('register_id', $request->register_id)->first();
+        if(!$register_data) {
+            return abort(403);
+        }
+
         //ข้อมูลคอร์สที่จะลงทะเบียน
         $course = Course::where('course_id', $request->course_id)->first();
 
@@ -61,11 +68,8 @@ class RegisterCourseController extends Controller
 
             /**ตรวจสอบว่ามีการลงทะเบียนซ้ำ */
             if ($check_register_course->contains('course_id', $request->course_id)) {
-                $response = [
-                    'status' => 403,
-                    'message' => "ท่านได้ลงลงทะเบียนหลักสูตรนี้แล้วกรูณาเลือกใหม่!!"
-                ];
-                return response()->json($response);
+
+                return redirect()->route('register.show', $register_data->register_id)->with('error','ท่านได้ลงลงทะเบียนหลักสูตรนี้แล้วกรุณาเลือกใหม่');
             }
 
             /**ตรวจสอบว่ามีการสมัครครบ 2 หลักสูตรแล้วหรือยัง */
@@ -83,21 +87,15 @@ class RegisterCourseController extends Controller
                 if (!($check_register_course->contains('course_group', $course->course_group))) {
                     /**บันทึกการลงทะเบียนหลักสูตร */
 
-                    // $course->start_time;
-                    // $course->end_time;
+                    $check1 = DB::table('register_courses')
+                    ->where('register_id', $request->register_id)
+                    ->where('is_delete', 0)
+                    ->where(function($query) use($course) {
+                        $query->where('start_time', $course->start_time)
+                            ->orWhere('end_time', $course->end_time);
+                    })
+                    ->get();
 
-                    $check1 = RegisterCourse::where('register_id', $request->register_id)
-                        ->where('is_delete', 0)
-                        ->whereBetween('start_time', [$course->start_time, $course->end_time])
-                        ->whereBetween('end_time', [$course->start_time, $course->end_time])
-                        ->get();
-
-            // $check2 = $check1->whereBetween('start_time', [$course->start_time, $course->end_time])
-            //         ->OrwhereBetween('end_time', [$course->start_time, $course->end_time])
-            //         ->count();
-
-
-                       // return response()->json($check1);
                         
                     if($check1->count() > 0) {
                         $response = [
@@ -105,7 +103,7 @@ class RegisterCourseController extends Controller
                             'message' => "เวลาซ้ำกับหลักสูตรอื่นที่ได้ลงทะเบียนแล้ว",
                         ];
     
-                        return response()->json($response);
+                        return redirect()->route('register.show', $register_data->register_id)->with('error','เวลาซ้ำกับหลักสูตรอื่นที่ได้ลงทะเบียนแล้ว');
                     }
 
                     $data = [
@@ -121,29 +119,14 @@ class RegisterCourseController extends Controller
 
                     $register_course = RegisterCourse::create($data);
 
-                    $response = [
-                        'status' => 201,
-                        'message' => "บันทึกข้อมูลสำเร็จ",
-                        'register_course_id' => $register_course->register_course_id
-                    ];
-
-                    return response()->json($response);
+                    return redirect()->route('register.show', $register_data->register_id)->with('success','บันทึกข้อมูลเรียบร้อย');
                 }
 
-                $response = [
-                    'status' => 403,
-                    'message' => "เวลาซ้ำกับหลักสูตรอื่นที่ได้ลงทะเบียนแล้ว"
-                ];
-
-                return response()->json($response);
+                return redirect()->route('register.show', $register_data->register_id)->with('error','เวลาซ้ำกับหลักสูตรอื่นที่ได้ลงทะเบียนแล้ว');
             }
         } else {
-            $response = [
-                'status' => 403,
-                'message' => "หลักสูตรมีผู้ลงทะเบียนครบจำนวนแล้ว!!"
-            ];
 
-            return response()->json($response);
+            return redirect()->route('register.show', $register_data->register_id)->with('error','หลักสูตรมีผู้ลงทะเบียนครบจำนวนแล้ว!!');
         }
     }
 
@@ -235,6 +218,10 @@ class RegisterCourseController extends Controller
      */
     public function destroy($register_id, $register_course_id)
     {
+        $register_data = Register::where('register_id', $register_id)->first();
+        if(!$register_data) {
+            return abort(403);
+        }
         $destroy = RegisterCourse::where('register_course_id', $register_course_id)
             ->where('register_id', $register_id)
             ->update([
@@ -244,17 +231,10 @@ class RegisterCourseController extends Controller
             ]);
 
         if ($destroy) {
-            $response = [
-                'status' => 200,
-                'message' => "ยกเลิกการลงทะเบียนแล้ว"
-            ];
-            return response()->json($response);
+            return redirect()->route('register.show', $register_data->register_id)->with('success','ยกเลิกรายการสำเร็จ');
         } else {
-            $response = [
-                'status' => 404,
-                'message' => "ไม่พบการลงทะเบียนหลังสูตรนี้"
-            ];
-            return response()->json($response);
+
+            return redirect()->route('register.show', $register_data->register_id)->with('error','ไม่พบการลงทะเบียนหลังสูตรนี้');
         }
     }
 }

@@ -24,14 +24,14 @@ return new class extends Migration
             $table->integer('province_id');
             $table->string('post_code');
             $table->string('tel_no')->unique();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->tinyinteger('age');
-            $table->tinyinteger('residence_mst_id');
-            $table->tinyinteger('farmland_mst_id');
-            $table->tinyinteger('education_lv_mst_id');
-            $table->tinyinteger('career_mst_id');
-            $table->tinyinteger('income_mst_id');
-            $table->tinyinteger('reason_mst_id');
+            $table->tinyinteger('residence_mst_id')->nullable();
+            $table->tinyinteger('farmland_mst_id')->nullable();
+            $table->tinyinteger('education_lv_mst_id')->nullable();
+            $table->tinyinteger('career_mst_id')->nullable();
+            $table->tinyinteger('income_mst_id')->nullable();
+            $table->tinyinteger('reason_mst_id')->nullable();
             $table->timestamps();
         });
     }
