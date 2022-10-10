@@ -8,13 +8,13 @@
         </div>
     </div>
 
-    <form action="{{ route('register.store') }}" method="post">
+    <form action="{{ route('register.store') }}" method="post" name="form1">
         @csrf
         <div class="card border-0 shadow-sm mt-3 p-3">
             <div class="row my-2">
                 <div class="col-md-4 m-1">
-                    <label for="tel_no" class="form-label fw-semibold"><strong class="text-danger">*</strong>หมายเลขโทรศัพท์</label>
-                    <input type="text" class="form-control form-control-lg tel_no" id="tel_no" name="tel_no" maxlength="10" onkeypress='validate(event)' required>
+                    <label for="tel_no" class="form-label fw-semibold"><strong class="text-danger">*</strong>หมายเลขโทรศัพท์มือถือ</label>
+                    <input type="text" class="form-control form-control-lg border-0 tel_no" id="tel_no" name="tel_no" maxlength="10" onkeypress='validate(event)' readonly required>
                     <span id="tel_no"></span>
                 </div>
                 @error('tel_no')
@@ -23,9 +23,9 @@
                 </div>
                 @enderror
                 <div class="col-md-4 m-1">
-                    <label for="tel_no_confirm" class="form-label fw-semibold"><strong class="text-danger">*</strong>ยืนยันหมายเลขโทรศัพท์</label>
+                    <label for="tel_no_confirm" class="form-label fw-semibold"><strong class="text-danger">*</strong>ยืนยันหมายเลขโทรศัพท์มือถือ</label>
                     <input type="text" class="form-control form-control-lg tel_no_confirm" id="tel_no_confirm" name="tel_no_confirm" maxlength="10" onkeypress='validate(event)' required><span id="passwordHelpInline" class="form-text">
-                        ระบุให้ตรงกับข้อมูลในช่องหมายเลขโทรศัพท์
+                        ระบุให้ตรงกับข้อมูลในช่องหมายเลขโทรศัพท์มือถือ
                     </span>
                 </div>
                 @error('tel_no_confirm')
@@ -56,7 +56,7 @@
                 @enderror
                 <div class="col-md-4 m-1">
                     <label for="firstname" class="form-label fw-semibold"><strong class="text-danger">*</strong>ชื่อ</label>
-                    <input type="text" class="form-control form-control-lg" id="firstname" name="firstname" value="{{ old('firstname') }}" required>
+                    <input type="text" class="form-control form-control-lg" id="firstname" name="firstname" value="{{ old('firstname') }}" maxlength="30" required>
                 </div>
                 @error('firstname')
                 <div class="my-2">
@@ -65,7 +65,7 @@
                 @enderror
                 <div class="col-md-4 m-1">
                     <label for="lastname" class="form-label fw-semibold"><strong class="text-danger">*</strong>นามสกุล</label>
-                    <input type="text" class="form-control form-control-lg" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
+                    <input type="text" class="form-control form-control-lg" id="lastname" name="lastname" value="{{ old('lastname') }}" maxlength="30" required>
                 </div>
                 @error('lastname')
                 <div class="my-2">
@@ -74,11 +74,50 @@
                 @enderror
             </div>
             <div class="row my-2">
-                <div class="col-md-4 m-1">
-                    <label for="address" class="form-label fw-semibold"><strong class="text-danger">*</strong>ที่อยู่</label>
-                    <textarea class="form-control form-control-lg" name="address" id="" cols="50" rows="5" required>{{ old('address') }}</textarea>
+                <div class="form-text fs-6 fw-light fst-italic">
+                    (ที่อยู่ปัจจุบัน)
+                </div>
+                <div class="col-md-2 m-1">
+                    <label for="address" class="form-label fw-semibold"><strong class="text-danger">*</strong>บ้านเลขที่ </label>
+                    <input type="text" class="form-control form-control-lg" id="address" name="address" value="{{ old('address') }}" maxlength="10" required>
                 </div>
                 @error('address')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="moo" class="form-label fw-semibold">หมู่ที่</label>
+                    <input type="text" class="form-control form-control-lg" id="moo" name="moo" value="{{ old('moo') }}" maxlength="10">
+                </div>
+                @error('moo')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="village" class="form-label fw-semibold">หมู่บ้าน</label>
+                    <input type="text" class="form-control form-control-lg" id="village" name="village" value="{{ old('village') }}" maxlength="30">
+                </div>
+                @error('village')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="soi" class="form-label fw-semibold">ซอย</label>
+                    <input type="text" class="form-control form-control-lg" id="soi" name="soi" value="{{ old('soi') }}" maxlength="30">
+                </div>
+                @error('soi')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="road" class="form-label fw-semibold">ถนน</label>
+                    <input type="text" class="form-control form-control-lg" id="road" name="road" value="{{ old('road') }}" maxlength="30">
+                </div>
+                @error('road')
                 <div class="my-2">
                     <span class="text-danger">{{$message}}</span>
                 </div>
@@ -141,7 +180,7 @@
             <div class="row my-2">
                 <div class="col-md-4 m-1">
                     <label for="email" class="form-label fw-semibold">อีเมล์</label>
-                    <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ old('email') }}">
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ old('email') }}" maxlength="30">
                 </div>
                 @error('email')
                 <div class="my-2">
@@ -149,8 +188,8 @@
                 </div>
                 @enderror
                 <div class="col-md-4 m-1">
-                    <label for="age" class="form-label fw-semibold"><strong class="text-danger">*</strong>อายุ</label>
-                    <input type="text" class="form-control form-control-lg" id="age" name="age" value="{{ old('age') }}"  required>
+                    <label for="age" class="form-label fw-semibold"><strong class="text-danger">*</strong>อายุ(ปี)</label>
+                    <input type="text" class="form-control form-control-lg" id="age" name="age" value="{{ old('age') }}" maxlength="2" onkeypress='validate(event)' required>
                 </div>
                 @error('age')
                 <div class="my-2">
@@ -160,7 +199,7 @@
             </div>
 
             <div class="d-flex justify-content-center m-3">
-            <a href="{{ route('index') }}" class="btn btn-secondary btn-lg fw-semibold m-2">กลับ</a>
+                <a href="{{ route('index') }}" class="btn btn-secondary btn-lg fw-semibold m-2">กลับ</a>
                 <button type="submit" class="btn btn-primary btn-lg submit_form fw-semibold m-2 disabled ">บันทึก</button>
             </div>
         </div>
@@ -186,7 +225,7 @@
                 },
                 success: function(result) {
                     $('.amphure').html(result);
-                    
+
                 }
             })
         }
@@ -260,7 +299,6 @@
 
         }
     });
-
 </script>
 
 <script>
@@ -282,4 +320,6 @@
         }
     }
 </script>
+
+
 @endsection

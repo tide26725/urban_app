@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('address');
+            $table->string('moo')->nullable();
+            $table->string('village')->nullable();
+            $table->string('soi')->nullable();
+            $table->string('road')->nullable();
             $table->integer('district_id');
             $table->integer('amphure_id');
             $table->integer('province_id');

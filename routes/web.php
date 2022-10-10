@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RegisterCourseController;
+use App\Models\RegisterCourse;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,13 +21,14 @@ use App\Http\Controllers\RegisterCourseController;
 */
 
 Route::get('/', function () {
+
     return view('index');
 })->name('index');
 
 
 /**แสดงข้อมูลส่วนตัว*/
-Route::get('index/{tel_no?}', [RegisterController::class, 'index'])->name('register.index');
-Route::get('show/{register_id}', [RegisterController::class, 'show'])->name('register.show');
+Route::get('register/index/{tel_no?}', [RegisterController::class, 'index'])->name('register.index');
+Route::get('register/show/{register_id}', [RegisterController::class, 'show'])->name('register.show');
 
 /**บันทึกข้อมูลส่วนตัว*/
 Route::post('register/store', [RegisterController::class, 'store'])->name('register.store');

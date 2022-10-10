@@ -25,7 +25,7 @@
         <div class="card border-0 shadow-sm mt-3 p-3">
             <div class="row my-2">
                 <div class="col-md-4 m-1">
-                    <label for="tel_no" class="form-label fw-semibold">หมายเลขโทรศัพท์</label>
+                    <label for="tel_no" class="form-label fw-semibold">หมายเลขโทรศัพท์มือถือ</label>
                     <input type="text" class="form-control form-control-lg border-0 tel_no" id="tel_no" name="tel_no" value="{{ $register->tel_no }}" required readonly>
                     <span id="tel_no"></span>
                 </div>
@@ -54,7 +54,7 @@
                 @enderror
                 <div class="col-md-4 m-1">
                     <label for="firstname" class="form-label fw-semibold"><strong class="text-danger">*</strong>ชื่อ</label>
-                    <input type="text" class="form-control form-control-lg" id="firstname" name="firstname" value="{{ $register->firstname }}" required>
+                    <input type="text" class="form-control form-control-lg" id="firstname" name="firstname" value="{{ $register->firstname }}" maxlength="30" required>
                 </div>
                 @error('firstname')
                 <div class="my-2">
@@ -63,7 +63,7 @@
                 @enderror
                 <div class="col-md-4 m-1">
                     <label for="lastname" class="form-label fw-semibold"><strong class="text-danger">*</strong>นามสกุล</label>
-                    <input type="text" class="form-control form-control-lg" id="lastname" name="lastname" value="{{ $register->lastname }}" required>
+                    <input type="text" class="form-control form-control-lg" id="lastname" name="lastname" value="{{ $register->lastname }}" maxlength="30"required>
                 </div>
                 @error('lastname')
                 <div class="my-2">
@@ -73,10 +73,46 @@
             </div>
             <div class="row my-2">
                 <div class="col-md-4 m-1">
-                    <label for="address" class="form-label fw-semibold"><strong class="text-danger">*</strong>ที่อยู่</label>
-                    <textarea class="form-control form-control-lg" name="address" id="" cols="50" rows="5" required>{{ $register->address }}</textarea>
+                    <label for="address" class="form-label fw-semibold"><strong class="text-danger">*</strong>บ้านเลขที่</label>
+                    <input type="text" class="form-control form-control-lg" id="address" name="address" value="{{ $register->address }}" maxlength="10" required>
                 </div>
                 @error('address')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="moo" class="form-label fw-semibold">หมู่ที่</label>
+                    <input type="text" class="form-control form-control-lg" id="moo" name="moo" maxlength="10" value="{{ $register->moo }}">
+                </div>
+                @error('moo')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="village" class="form-label fw-semibold">หมู่บ้าน</label>
+                    <input type="text" class="form-control form-control-lg" id="village" name="village" value="{{ $register->village }}" maxlength="30">
+                </div>
+                @error('village')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="soi" class="form-label fw-semibold">ซอย</label>
+                    <input type="text" class="form-control form-control-lg" id="soi" name="soi" value="{{ $register->soi }}" maxlength="30">
+                </div>
+                @error('soi')
+                <div class="my-2">
+                    <span class="text-danger">{{$message}}</span>
+                </div>
+                @enderror
+                <div class="col-md-2 m-1">
+                    <label for="road" class="form-label fw-semibold">ถนน</label>
+                    <input type="text" class="form-control form-control-lg" id="road" name="road" value="{{ $register->road }}" maxlength="30">
+                </div>
+                @error('road')
                 <div class="my-2">
                     <span class="text-danger">{{$message}}</span>
                 </div>
@@ -145,7 +181,7 @@
             <div class="row my-2">
                 <div class="col-md-4 m-1">
                     <label for="email" class="form-label fw-semibold">อีเมล์</label>
-                    <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ $register->email }}" required>
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ $register->email }}" maxlength="30" required>
                 </div>
                 @error('email')
                 <div class="my-2">
@@ -154,7 +190,7 @@
                 @enderror
                 <div class="col-md-4 m-1">
                     <label for="age" class="form-label fw-semibold"><strong class="text-danger">*</strong>อายุ</label>
-                    <input type="text" class="form-control form-control-lg" id="age" name="age" value="{{ $register->age }}" required>
+                    <input type="text" class="form-control form-control-lg" id="age" name="age" value="{{ $register->age }}" maxlength="2" required>
                 </div>
                 @error('age')
                 <div class="my-2">

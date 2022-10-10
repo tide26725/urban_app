@@ -63,6 +63,10 @@ class RegisterController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'address' => 'required',
+            // 'moo' => 'required',
+            // 'village' => 'required',
+            // 'soi' => 'required',
+            // 'road' => 'required',
             'district_id' => 'required',
             'amphure_id' => 'required',
             'province_id' => 'required',
@@ -79,6 +83,10 @@ class RegisterController extends Controller
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'address' => $request->address,
+            'moo' => $request->moo,
+            'village' => $request->village,
+            'soi' => $request->soi,
+            'road' => $request->road,
             'district_id' => $request->district_id,
             'amphure_id' => $request->amphure_id,
             'province_id' => $request->province_id,
@@ -90,7 +98,7 @@ class RegisterController extends Controller
             'updated_at' => Carbon::now()
         ];
 
-
+        // dd($data);
         $register = Register::create($data);
         
         //return view('questionnaire', compact('register'));
@@ -188,6 +196,10 @@ class RegisterController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'address' => 'required',
+            // 'moo' => 'required',
+            // 'village' => 'required',
+            // 'soi' => 'required',
+            // 'road' => 'required',
             'district_id' => 'required',
             'amphure_id' => 'required',
             'province_id' => 'required',
@@ -200,6 +212,10 @@ class RegisterController extends Controller
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'address' => $request->address,
+            'moo' => $request->moo,
+            'village' => $request->village,
+            'soi' => $request->soi,
+            'road' => $request->road,
             'district_id' => $request->district_id,
             'amphure_id' => $request->amphure_id,
             'province_id' => $request->province_id,

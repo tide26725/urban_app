@@ -32,13 +32,22 @@
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="" class="col-sm-2 col-form-label fs-5 fw-semibold">ที่อยู่ :</label>
+                <label for="" class="col-sm-2 col-form-label fs-5 fw-semibold">ที่อยู่ปัจจุบัน :</label>
                 <div class="col-sm-10">
-                    <p class="form-control-plaintext fs-5">{{ $register->address }} {{ $register->district_name }} {{ $register->amphure_name }} {{ $register->province_name }} {{ $register->zip_code }}</p>
+                    <p class="form-control-plaintext fs-5">
+                        บ้านเลขที่ {{ $register->address }}
+                        {{ $register->moo ? 'หมู่ที่.'.$register->moo : 'หมู่ที่.- ' }}
+                        {{ $register->village ? 'หมู่บ้าน.'.$register->village : 'หมู่บ้าน.- '}}
+                        {{ $register->soi ? 'ซอย.'.$register->soi : 'ซอย.- '}}
+                        {{ $register->road ? 'ถนน.'.$register->road : 'ถนน.- ' }}
+                        ต.{{ $register->district_name }}
+                        อ.{{ $register->amphure_name }}
+                        จ.{{ $register->province_name }} {{ $register->zip_code }}
+                    </p>
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="" class="col-sm-2 col-form-label fs-5 fw-semibold">หมายเลขโทรศัพท์ :</label>
+                <label for="" class="col-sm-2 col-form-label fs-5 fw-semibold">หมายเลขโทรศัพท์มือถือ :</label>
                 <div class="col-sm-10">
                     <p class="form-control-plaintext fs-5">{{ $register->tel_no }}</p>
                 </div>
@@ -61,10 +70,10 @@
     <div class="card shadow-sm border-0 p-3 my-3">
         <div class="row">
             @if($count < 2) <div class="d-flex justify-content-center my-3">
-                <button type="submit" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">เลือกหลักสูตร</button>
+                <button type="submit" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap">เลือกหลักสูตร</button>
         </div>
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -102,13 +111,18 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> ปิด</button>
-                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> ลงทะเบียน</button>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> ยืนยัน</button>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
         @endif
         @if(count($register_course) == 0)
         <div class="card-body text-center">
@@ -136,11 +150,11 @@
                     </p>
                     @if($course->status == 0)
 
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal2{{ $course->register_course_id }}">
                         <i class="fa-solid fa-xmark"></i> เปลี่ยน
                     </button>
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal2{{ $course->register_course_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -166,7 +180,12 @@
     </div>
 </div>
 
+<script>
 
+
+
+
+</script>
 
 
 @endsection

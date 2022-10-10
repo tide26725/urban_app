@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card p-3">
-                <h4 class="mb-3">หลักสูตร {{ $course_detail->course_name }}</h4>
+                <h4 class="mb-3">หลักสูตร {{ $course_detail->course_name }}  {{ $course_detail->start_time }}-{{ $course_detail->end_time }}</h4>
                 <p>จำนวนที่รับทั้งหมด : <strong>{{ $course_detail->quota_max }}</strong></p>
                 <p>จำนวนตัวจริง : <strong>{{ $course_detail->quota }}</strong></p>
             </div>
@@ -63,6 +63,7 @@
                             <th scope="col">ชื่อ-นามสกุล</th>
                             <th scope="col">เบอร์โทร</th>
                             <th scope="col">อายุ</th>
+                            <th scope="col">วันที่สมัครหลักสูตร</th>
                             <th scope="col">สถานะ</th>
                             <th scope="col">จัดการ</th>
                         </tr>
@@ -74,6 +75,7 @@
                             <td>{{ $user->firstname }} {{ $user->lastname }}</td>
                             <td>{{ $user->tel_no }}</td>
                             <td>{{ $user->age }}</td>
+                            <td>{{ $user->created_at }}</td>
                             <td>
                                 @if($user->status == 1)
                                 <span class="badge rounded-pill text-bg-success">เข้าร่วม</span>
@@ -82,12 +84,10 @@
                                 @endif
                             </td>
                             <td>
-                                @if($user->status == 0)
+
                                 <a href="{{ route('verify.confirm', $user->register_course_id) }}" class="btn btn-primary m-1" onclick="return confirm('ตกลงเข้าร่วม?');"><i class="fa-sharp fa-solid fa-square-check"></i></a>
                                 <a href="{{ route('verify.cancel', $user->register_course_id) }}" class="btn btn-danger m-1" onclick="return confirm('ปฏิเสธการเข้าร่วม?');"><i class="fa-sharp fa-solid fa-xmark"></i></a>
-                                @elseif($user->status == 1 || $user->status == 2)
 
-                                @endif
                             </td>
                         </tr>
                         @endforeach

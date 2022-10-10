@@ -23,7 +23,8 @@ class CourseController extends Controller
             ->leftJoin('registers', 'register_courses.register_id', 'registers.register_id')
             ->where('register_courses.course_id', $course_id)
             ->where('is_delete', 0)
-            ->select('register_courses.register_course_id', 'register_courses.status', 'registers.firstname', 'registers.lastname', 'registers.tel_no', 'registers.age')
+            ->select('register_courses.register_course_id', 'register_courses.status', 'register_courses.created_at', 'registers.firstname', 'registers.lastname', 'registers.tel_no', 'registers.age')
+            ->orderby('register_courses.created_at','asc')
             ->get();
 
         /**รายละเอียดคอร์ส */
@@ -61,7 +62,7 @@ class CourseController extends Controller
                                 ->count();
 
         if ($count > $course->quota_max) {
-            dd($course->quota_max);
+            // dd($course->quota_max);
             return redirect()->route('course.view', $course_id->course_id)->with('error', 'ครบจำนวนที่กำหนด');
             
         } else {
