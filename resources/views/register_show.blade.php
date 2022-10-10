@@ -81,6 +81,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <strong class="text-primary m-1">ขอให้ท่านเดินทางมาถึงสถานที่การอบรมฝึกอาชีพ<br>ก่อนเวลาเข้ารับการอบรม 15 นาที</strong>
+
                         <form action="{{ route('register_course.store') }}" method="post">
                             @csrf
                             <div class="mb-3">
@@ -111,9 +113,9 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> ปิด</button>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> ยืนยัน</button>
-                                </div>
+
+                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> ยืนยัน</button>
+
                             </div>
                         </form>
                     </div>
@@ -131,7 +133,7 @@
         @else
 
         @foreach($register_course as $course)
-
+        <p>หมายเหตุ **ขอให้ท่านเดินทางมาถึงสถานที่การอบรมฝึกอาชีพ ก่อนเวลาเข้ารับการอบรม 15 นาที**</p>
         <div class="col-md-6">
             <div class="card shadow border-0 m-1">
                 <div class="card-body">

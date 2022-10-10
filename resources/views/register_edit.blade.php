@@ -10,6 +10,7 @@
     @if(session("success"))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>{{session('success')}}</strong>
+        <a href="{{ route('register.show', $register->register_id) }}" class="btn btn-secondary fw-semibold ">กลับ</a>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
@@ -181,7 +182,7 @@
             <div class="row my-2">
                 <div class="col-md-4 m-1">
                     <label for="email" class="form-label fw-semibold">อีเมล์</label>
-                    <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ $register->email }}" maxlength="30" required>
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ $register->email }}" maxlength="30" >
                 </div>
                 @error('email')
                 <div class="my-2">
