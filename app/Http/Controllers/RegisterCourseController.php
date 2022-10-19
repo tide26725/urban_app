@@ -57,6 +57,7 @@ class RegisterCourseController extends Controller
         //นับจำนวนผู้ลงทะเบียนคอร์สนั้นๆ
         $count = RegisterCourse::where('course_id', $request->course_id)
             ->where('is_delete', 0)
+            ->whereNotIn('status', [2])
             ->count();
            
         //ตรวจสอบว่าจำนวนคนลงทะเบียนเกินที่กำหนดหรือไม่

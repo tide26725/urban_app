@@ -9,6 +9,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RegisterCourseController;
 use App\Models\RegisterCourse;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\RegisterCourseExportController;
+use App\Http\Controllers\SearchRegisterCourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +61,17 @@ Route::post('dropdown/fetch_amphure', [DropdownController::class, 'fetch_amphure
 Route::post('dropdown/fetch_district', [DropdownController::class, 'fetch_district'])->name('dropdown.fetch_district');
 Route::post('dropdown/fetch_postcode', [DropdownController::class, 'fetch_postcode'])->name('dropdown.fetch_postcode');
 
+/**
+ * Search Register Course
+ */
+Route::get('search_register_course', [SearchRegisterCourseController::class, 'index'])->name('search_register_course');
+
+Route::get('search_register_course/get/', [SearchRegisterCourseController::class ,'getRegisterInCourse'])->name('search.get');
+
+
+
+
+
 Auth::routes();
 
 
@@ -70,3 +83,9 @@ Route::get('course/view/{course_id}', [CourseController::class, 'index'])->name(
 
 Route::get('verify/confirm/{register_course_id}', [CourseController::class, 'confirm'])->name('verify.confirm');
 Route::get('verify/cancel/{register_course_id}', [CourseController::class, 'cancel'])->name('verify.cancel');
+
+
+
+/**Export Excel */
+Route::get('register_course/export', [RegisterCourseExportController::class, 'export'])->name('export.all_excel');
+Route::get('register_course/export_single/{course_id}', [RegisterCourseExportController::class, 'exportSingleCourse'])->name('export.single_course_excel');

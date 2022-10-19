@@ -23,6 +23,12 @@
             </div>
         </div>
     </div>
+    <div class="d-flex justify-content-end">
+        <div class="p-2">
+            <a href="{{ route('export.all_excel') }}" class="btn btn-success">Excel</a>
+        </div>
+
+    </div>
 
     <div class="row justify-content-center">
         <div class="card">
@@ -40,7 +46,10 @@
                     <tr>
                         <th scope="row">หลักสูตร : {{ $course->course_name}}</th>
                         <td>{{ $course->start_time }} - {{ $course->end_time }}</td>
-                        <td><a href=" {{ route('course.view', $course->course_id) }} " class="btn btn-primary">รายละเอียด</a></td>
+                        <td>
+                            <a href=" {{ route('course.view', $course->course_id) }} " class="btn btn-primary">รายละเอียด</a>
+                            <a href=" {{ route('export.single_course_excel', $course->course_id) }} " class="btn btn-success">excel</a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

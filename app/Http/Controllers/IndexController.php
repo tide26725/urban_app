@@ -28,6 +28,9 @@ class IndexController extends Controller
         $count_course_id_13 = $register_course->where('course_id', 13)->count();
         $count_course_id_14 = $register_course->where('course_id', 14)->count();
 
+        $courses = Course::all();
+        //dd($courses['0']->quota_max);
+
         return view('index', compact  (
             'count_course_id_1',
             'count_course_id_2',
@@ -42,14 +45,19 @@ class IndexController extends Controller
             'count_course_id_11',
             'count_course_id_12',
             'count_course_id_13',
-            'count_course_id_14'
+            'count_course_id_14',
+            'courses'
             ));
 
     }
 
     public function getRegisterCourse()
     {
-        return RegisterCourse::where('is_delete', 0)->get('course_id');
+        return RegisterCourse::where('is_delete', 0)
+        ->whereNotIn('status', [2])
+        ->get('course_id');
+
+
     }
 
 

@@ -59,9 +59,10 @@ class CourseController extends Controller
 
         $count = RegisterCourse::where('course_id', $course_id->course_id)
                                 ->where('is_delete', 0)
+                                ->where('status', 1)
                                 ->count();
-
-        if ($count > $course->quota_max) {
+        //dd($count);
+        if ($count >= $course->quota_max) {
             // dd($course->quota_max);
             return redirect()->route('course.view', $course_id->course_id)->with('error', 'ครบจำนวนที่กำหนด');
             

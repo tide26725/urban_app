@@ -71,7 +71,7 @@
                     <tbody>
                         @foreach($user_in_course as $user)
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">{{ $loop->index+1 }}</th>
                             <td>{{ $user->firstname }} {{ $user->lastname }}</td>
                             <td>{{ $user->tel_no }}</td>
                             <td>{{ $user->age }}</td>

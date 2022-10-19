@@ -131,9 +131,9 @@
             <h5>กดปุ่ม เลือกหลักสูตร เพื่อทำการลงทะเบียนหลักสูตรที่ต้องเข้าร่วม โดยสามารถเข้าร่วมได้สูงสุดไม่เกิน 2 หลักสูตร</h5>
         </div>
         @else
-
-        @foreach($register_course as $course)
         <p>หมายเหตุ **ขอให้ท่านเดินทางมาถึงสถานที่การอบรมฝึกอาชีพ ก่อนเวลาเข้ารับการอบรม 15 นาที**</p>
+        @foreach($register_course as $course)
+        
         <div class="col-md-6">
             <div class="card shadow border-0 m-1">
                 <div class="card-body">
